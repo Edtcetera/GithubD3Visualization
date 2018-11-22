@@ -6,9 +6,48 @@ $(document).ready(function(){
         clearCanvas();
 
         // find out the searchterm
-        var searchterm = $("#term").val() ? $("#term").val() : "github";
+        var searchterm = $("#term").val();
+        var repoterm = $("#repo").val();
 
-        // get user
+        // get repo commits
+        function getRepoCommits(callback) {
+            $.get("https://api.github.com/repos/" + searchterm + "/" + repoterm + "/" + "commits",
+                function (data, status) {
+                    console.log(status);
+                    success: callback(data, status);
+                });
+        };
+
+        // callback function to show commits
+        function showCommits(data, status) {
+            console.log(status);
+            console.log(data);
+        };
+
+        // call the user and repos functions
+        getRepoCommits(showCommits);
+
+    }); // end of search click function
+
+    // respond to click on clear button
+    $("#clear").click(function(){
+        $("#term").val(''); // extra detail to clear out input box
+        $("#repo").val('');
+        clearCanvas();
+    });
+
+    // clear the elements out
+    var clearCanvas = function(){
+        $("li").remove(); // clear out list items
+        $("h3").remove(); // clear out username heading
+        $("h4").remove(); // clear out heading "Repos"
+        $("#searchRepo").remove(); // clear out button
+        d3.selectAll("svg").remove(); // clear out chart
+
+    };
+});
+
+/*        // get user
         function getUserData(callback) {
             $.get("https://api.github.com/users/" + searchterm,
                 function(data, status){
@@ -33,9 +72,9 @@ $(document).ready(function(){
                     console.log(status);
                     success: callback(data,status,repo);
                 });
-        };
+        };*/
 
-        // callback function to show user
+/*       // callback function to show user
         function showUser(data, status){
             console.log(status);
             var username = "<h3>" + data.login + "</h3>";
@@ -201,15 +240,13 @@ $(document).ready(function(){
                     d3.select("#tooltip").remove();
                 });
 
-        }; // end of the showLangs function
+        }; // end of the showLangs function*/
 
+// call the user and repos functions
+/*        getUserData(showUser);
+        getUserRepos(showRepos);*/
 
-        // call the user and repos functions
-        getUserData(showUser);
-        getUserRepos(showRepos);
-
-
-        // setup for the d3 chart
+/*        // setup for the d3 chart
         // basic SVG setup
         var dataset = [];
         var margin = {top: 70, right: 20, bottom: 60, left: 100};
@@ -270,26 +307,5 @@ $(document).ready(function(){
             .attr("class", "chartTitle")
             .attr("text-anchor", "middle")
             .attr("transform", "translate(" + (w / 2) + ",20)")
-            .text("GitHub Repo");
-
-
-
-    }); // end of search click function
-
-    // respond to click on clear button
-    $("#clear").click(function(){
-        $("#term").val(''); // extra detail to clear out input box
-        clearCanvas();
-    });
-
-    // clear the elements out
-    var clearCanvas = function(){
-        $("li").remove(); // clear out list items
-        $("h3").remove(); // clear out username heading
-        $("h4").remove(); // clear out heading "Repos"
-        $("#searchRepo").remove(); // clear out button
-        d3.selectAll("svg").remove(); // clear out chart
-
-    };
-});
+            .text("GitHub Repo");*/
 
