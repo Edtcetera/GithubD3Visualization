@@ -1,30 +1,16 @@
+// Global vars for reference in other JS files
+var searchterm;
+var repoterm;
+
 $(document).ready(function(){
 
     $("#search").click(function(){
-
         // clear out previous results if needed
         clearCanvas();
 
         // find out the searchterm
-        var searchterm = $("#term").val();
-        var repoterm = $("#repo").val();
-
-        // get repo commits
-        function getRepoCommits(callback) {
-            $.get("https://api.github.com/repos/" + searchterm + "/" + repoterm + "/" + "commits",
-                function (data, status) {
-                    console.log(status);
-                    success: callback(data, status);
-                });
-        };
-
-        // callback function to show commits
-        function showCommits(data, status) {
-            console.log(status);
-            console.log(data);
-            var reponame = "<h3>" + repoterm + "</h3>";
-            $("#reponame").append(reponame);
-        };
+        searchterm = $("#term").val();
+        repoterm = $("#repo").val();
 
         // call the user and repos functions
         getRepoCommits(showCommits);
