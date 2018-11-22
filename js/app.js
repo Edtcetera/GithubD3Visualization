@@ -22,6 +22,8 @@ $(document).ready(function(){
         function showCommits(data, status) {
             console.log(status);
             console.log(data);
+            var reponame = "<h3>" + repoterm + "</h3>";
+            $("#reponame").append(reponame);
         };
 
         // call the user and repos functions
@@ -38,10 +40,7 @@ $(document).ready(function(){
 
     // clear the elements out
     var clearCanvas = function(){
-        $("li").remove(); // clear out list items
         $("h3").remove(); // clear out username heading
-        $("h4").remove(); // clear out heading "Repos"
-        $("#searchRepo").remove(); // clear out button
         d3.selectAll("svg").remove(); // clear out chart
 
     };
