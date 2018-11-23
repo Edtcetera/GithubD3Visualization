@@ -1,6 +1,9 @@
 // Global vars for reference in other JS files
 var searchterm;
 var repoterm;
+var svg;
+var chartWidth = 1000;
+var chartHeight = 500;
 
 $(document).ready(function(){
 
@@ -24,13 +27,27 @@ $(document).ready(function(){
         clearCanvas();
     });
 
-    // clear the elements out
-    var clearCanvas = function(){
-        $("h3").remove(); // clear out username heading
-        d3.selectAll("svg").remove(); // clear out chart
-
-    };
+    buildChart();
 });
+
+function clearCanvas() {
+    $("#repoName").text("\u00A0"); //&nbsp; empty space allows div to take up space
+    d3.selectAll("svg").remove(); // clear out chart
+    buildChart(); //rebuild starter chart
+}
+
+// Build the starter empty chart
+function buildChart() {
+    // setup for the d3 chart
+    // basic SVG setup
+
+    //Create SVG element
+    svg = d3.select("div#chart")
+        .append("svg")
+        .attr("align", "center")
+        .attr("width", chartWidth)
+        .attr("height", chartHeight);
+}
 
 /*        // get user
         function getUserData(callback) {
