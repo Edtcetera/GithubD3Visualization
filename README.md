@@ -1,4 +1,4 @@
-## Live commit history viewer
+# Live commit history viewer
 This web app visualizes the commit history of a Github repository live. Useful when working with others in real-time
 to know when teammates have pushed or started a new branch. It will warn contributors when two or more branches are
 working on the same file for potential merge-conflicts.
