@@ -12,8 +12,9 @@ $(document).ready(function(){
         clearCanvas();
 
         // find out the searchterm
-        searchterm = $("#term").val();
-        repoterm = $("#repo").val();
+        // TODO: if click search with empty, fill in with edtcetera/towerDefense for DEBUG purpose, remove after
+        searchterm = $("#term").val() ? $("#term").val() : "edtcetera";
+        repoterm = $("#repo").val() ? $("#repo").val() : "towerDefense";
 
         // call the user and repos functions
         getRepoCommits(showCommits);
