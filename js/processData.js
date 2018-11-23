@@ -58,12 +58,23 @@ function makeCircles(dataset, distanceBetweenNodes, middleGraph) {
 
     //TODO: Dynamically change the circle radius to a smaller/larger number for more/less commits,
     //TODO: Should be a max circle size so it doesn't look silly
+    //TODO: Dynamically change the pulse size in accordance to circle radius
     for (i = 1; i <= numberCommits; i++) {
         svg.append("circle")
             .attr("cx", i * distanceBetweenNodes)
             .attr("cy", middleGraph)
             .attr("r", 5);
+
+        svg.append("circle")
+            .attr("class", "pulseRing")
+            .attr("fill", "none")
+            .attr("stroke-width", 0.5)
+            .attr("stroke", "black")
+            .attr("cx", i * distanceBetweenNodes)
+            .attr("cy", middleGraph)
+            .attr("r", 5);
     }
+    pulse();
 }
 
 // Lines represent the flow of commits, merges, etc
@@ -78,4 +89,23 @@ function makeLines(dataset, distanceBetweenNodes, middleGraph) {
             .attr("x2", (i+1) * distanceBetweenNodes)
             .attr("y2", middleGraph);
     }
+}
+
+// Pulses the commit circles
+function pulse() {
+    var circles = svg.selectAll(".pulseRing");
+    (function repeat() {
+        circles = circles.transition()
+            .transition()
+            .duration(2000)
+            .attr('stroke-width', 0.01)
+            .attr("stroke", "blue")
+            .attr("r", 20)
+            .transition()
+            .duration(200)
+            .attr("stroke-width", 0.5)
+            .attr("stroke", "blue")
+            .attr("r", 5)
+            .on("end", repeat);
+    })();
 }
