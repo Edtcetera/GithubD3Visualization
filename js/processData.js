@@ -49,7 +49,6 @@ function updateChart(dataset) {
 
     makeCircles(dataset, distanceBetweenNodes, middleGraph);
     makeLines(dataset, distanceBetweenNodes, middleGraph);
-    //X axis needs to be dynamically scaled depending on number of commits
 }
 
 // Circles represent a commit
