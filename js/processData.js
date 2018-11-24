@@ -8,119 +8,6 @@ function getRepoCommits(callback) {
         });
 }
 
-var filenamesDataset = [];
-//var fileTarget = "";
-var originals = [];
-var numberOfBranches = 0;
-// get the same files that different branches are working on
-function getBranchesSameFiles() {
-    getBranches(getWorkingFiles);
-}
-
-function getWorkingFiles(data) {
-    var master = "master";
-    if (data.length > 1) {
-        for (i in data) {
-            if (data[i].name !== master) {
-                originals.push(data[i].name);
-            }
-        }
-        numberOfBranches = originals.length;
-        getFiles(getFilenames)
-    } else {
-        alert("no same working files");
-    }
-}
-
-// TODO: rename it!!
-function getFiles(callback) {
-    while (originals.length > 0) {
-        $.get("https://api.github.com/repos/" + searchterm + "/" + repoterm + "/compare/master..." + originals.pop(),
-            function (data, status) {
-                console.log(status);
-                // console.log(data);
-                callback(data);
-                if (filenamesDataset.length === numberOfBranches) {
-                    updateChartForSameFiles(filenamesDataset);
-                }
-            });
-    }
-}
-
-function updateChartForSameFiles(data) {
-    var dataset = preProcessFileData(data);
-    var branches = [];
-    for (var i in data) {
-        branches.push(Object.keys(data[i])[0]);
-    }
-
-    makeCircles(Object.keys(dataset), (chartWidth)/(Object.keys(dataset).length + 1), chartHeight/2);
-    makeCircles(branches, (chartWidth)/(branches.length + 1), chartHeight * 3 /4);
-    makeLines2(dataset);
-}
-
-function preProcessFileData(data) {
-    var dataset = {};
-    for (var i in data) {
-        var arr = Object.values(data[i])[0];
-        if (arr.length !== 0) {
-            for (var j in arr) {
-                var br = Object.keys(data[j])[0];
-                var aFile = arr[j];
-                if (Object.keys(dataset).indexOf(aFile) > -1) {
-                    dataset[aFile].push(br);
-                } else {
-                    dataset[aFile] = [];
-                    dataset[aFile].push(br);
-                }
-            }
-        }
-    }
-    return dataset;
-}
-
-function getFilenames(data) {
-    var filenames = [];
-    if (data.files.length > 0) {
-        for (i in data.files)
-            filenames.push(data.files[i].filename);
-    }
-    var toAdd = {};
-    var target = data.url.split("...")[1];
-    toAdd[target] = filenames;
-    filenamesDataset.push(toAdd);
-}
-
-function makeLines2(dataset) {
-    // var numberLines = dataset.length - 1;
-    //
-    // for (i = 1; i <= numberLines; i++) {
-    //     svg.append("line")
-    //         .style("stroke", "black")
-    //         .attr("x1", i * distanceBetweenNodes)
-    //         .attr("y1", middleGraph)
-    //         .attr("x2", (i+1) * distanceBetweenNodes)
-    //         .attr("y2", middleGraph);
-    // }
-    for (var i in dataset) {
-        var x = i;
-        var b = x;
-        var branches = dataset[i];
-        var file_cx = Number(document.getElementById(i).getAttribute("cx"));
-        var file_cy = Number(document.getElementById(i).getAttribute("cy"));
-        for (var j in branches) {
-            var br = branches[j];
-            var br_cx = Number(document.getElementById(br).getAttribute("cx"));
-            var br_cy = Number(document.getElementById(br).getAttribute("cy"));
-            svg.append("line")
-                .style("stroke", "black")
-                .attr("x1", file_cx)
-                .attr("y1", file_cy)
-                .attr("x2", br_cx)
-                .attr("y2", br_cy);
-        }
-    }
-}
 
 // Where we identify what information we want to extract from API to later showCommits via D3
 function processCommit(data) {
@@ -150,7 +37,7 @@ function getBranches(callback) {
             console.log(status);
             callback(data, status);
         });
-};
+}
 
 // TODO - callback function to process branches
 
@@ -178,7 +65,7 @@ function makeCircles(dataset, distanceBetweenNodes, middleGraph) {
             .attr("onclick", "testClick(this.id)")
             .attr("cx", i * distanceBetweenNodes)
             .attr("cy", middleGraph)
-            .attr("r", 10);
+            .attr("r", 5);
 
         svg.append("circle")
             .attr("class", "pulseRing")
