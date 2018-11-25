@@ -46,7 +46,7 @@ function getBranches(callback) {
 function updateChart(dataset) {
     //find number of commits/circles to make
     var distanceBetweenNodes = (chartWidth)/(dataset.length + 1);
-    var middleGraph = chartHeight/4;
+    var middleGraph = chartHeight/6;
 
     makeCircles(dataset, distanceBetweenNodes, middleGraph);
     makeLines(dataset, distanceBetweenNodes, middleGraph);
@@ -76,7 +76,7 @@ function makeCircles(dataset, distanceBetweenNodes, middleGraph) {
             .attr("cy", middleGraph)
             .attr("r", 5);
     }
-    pulse();
+    // pulse();
 }
 
 // click on circle
