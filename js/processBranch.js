@@ -3,6 +3,9 @@ var filenamesDataset ;
 var originals;
 var numberOfBranches;
 var workingBranches;
+var branchCommits = [];
+var map = new Object;
+//var map = new Hashmap();
 // get the same files that different branches are working on
 function getBranchesSameFiles() {
     filenamesDataset = [];
@@ -17,7 +20,9 @@ function getBranchesSameFiles() {
                 for (var i in data) {
                     if (data[i].name !== master) {
                         originals.push(data[i].name);
-                    }
+                        branchCommits.push(data[i]);
+
+                                }
                 }
                 numberOfBranches = originals.length;
                 getBranchFiles(getFilenames);
@@ -26,6 +31,20 @@ function getBranchesSameFiles() {
             }
         });
 }
+
+function getCommitsPerBranch() {
+    for (var i=0; i < branchCommits.length; i++){
+        var name = branchCommits[i].name;
+        var size = 0;
+    $.get("https://api.github.com/repos/" + repoterm + "/commits?per_page=100&sha=" + branchCommits[i].sha,
+    function (data, status) {
+        console.log(status);
+        size = data.length + 1;
+        map[name]=size;
+
+            });
+    } }
+
 
 //
 // function getWorkingBranches(data) {
@@ -75,7 +94,7 @@ function getBranchFiles(callback) {
 function updateChartForSameFiles(data) {
     var dataset = preProcessFileData(data);
     var branches = workingBranches;
-
+    getCommitsPerBranch();
     // makeCircles(Object.keys(dataset), (chartWidth)/(Object.keys(dataset).length + 1), chartHeight/2);
     // makeCircles(branches, (chartWidth)/(branches.length + 1), chartHeight * 3 /4);
     // makeLines2(dataset);
@@ -159,12 +178,16 @@ function makeDataset(dataset, branches) {
 // var testWidth = +svg.attr("width");
 // var testHeight = +svg.attr("height");
 
+
+
+
 var simulation;
 
 function drawGraph(dataset) {
     var node_data = dataset[0];
     var link_data = dataset[1];
     var radius = 5;
+
 
     simulation = d3.forceSimulation()
         .force("link", d3.forceLink().id(function(d){ return d.id;}).distance(80))
@@ -185,7 +208,7 @@ function drawGraph(dataset) {
         .data(node_data)
         .enter().append("circle")
         .attr("id", function (d) { return d.id})
-        .attr("r", radius)
+        .attr("r", function(d){return map[d.id];})
         .attr("fill", circleColor)
         .attr("onclick", "testClick(this.id)")
         .call(d3.drag()
