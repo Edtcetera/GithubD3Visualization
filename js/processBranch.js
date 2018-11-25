@@ -27,22 +27,6 @@ function getBranchesSameFiles() {
         });
 }
 
-//
-// function getWorkingBranches(data) {
-//     var master = "master";
-//     if (data.length > 1) {
-//         for (var i in data) {
-//             if (data[i].name !== master) {
-//                 originals.push(data[i].name);
-//             }
-//         }
-//         numberOfBranches = originals.length;
-//         getBranchFiles(getFilenames)
-//     } else {
-//         alert("no same working files");
-//     }
-// }
-
 // store filenames and branch as object {branch:[filenames]}
 function getFilenames(data) {
     var filenames = [];
@@ -109,26 +93,6 @@ function preProcessFileData(data) {
     return dataset;
 }
 
-// Lines to connect branch and files
-function makeLines2(dataset) {
-    for (var i in dataset) {
-        var branches = dataset[i];
-        var file_cx = Number(document.getElementById(i).getAttribute("cx"));
-        var file_cy = Number(document.getElementById(i).getAttribute("cy"));
-        for (var j in branches) {
-            var br = branches[j];
-            var br_cx = Number(document.getElementById(br).getAttribute("cx"));
-            var br_cy = Number(document.getElementById(br).getAttribute("cy"));
-            svg.append("line")
-                .style("stroke", "black")
-                .attr("x1", file_cx)
-                .attr("y1", file_cy)
-                .attr("x2", br_cx)
-                .attr("y2", br_cy);
-        }
-    }
-}
-
 function makeDataset(dataset, branches) {
     var nodes = [];
     var links = [];
@@ -153,6 +117,13 @@ function makeDataset(dataset, branches) {
             links.push(link);
         }
     }
+    // var extra = processBranchDataset();
+    // var extraNodes = extra[0];
+    // var extraLinks = extra[1];
+    // if (extraNodes.length > 0)
+    //     nodes = nodes.concat(extraNodes);
+    // if (extraLinks.length > 0)
+    //     links = links.concat(extraLinks);
     return [nodes, links];
 }
 
@@ -213,43 +184,6 @@ function drawGraph(dataset) {
             .attr("cy", function (d) { return d.y = Math.max(radius, Math.min(chartHeight - radius, d.y))});
     }
 
-    // TODO: OLD
-    // var simulation = d3.forceSimulation().nodes(node_data);
-    // simulation
-    //     .force("charge_force", d3.forceManyBody())
-    //     .force("center_force", d3.forceCenter(width/2, height/2));
-    // var node = svg.append("g")
-    //     .attr("class", "nodes")
-    //     .selectAll("circle")
-    //     .data(node_data)
-    //     .enter()
-    //     .append("circle")
-    //     .attr("r", 5)
-    //     .attr("fill", "red");
-    //
-    // simulation.on("tick", tickActions());
-    // var link_force = d3.forceLink(link_data).id(function (d) {
-    //     return d.name;
-    // });
-    // simulation.force("links", link_force);
-    // var link = svg.append("g")
-    //     .attr("class", "links")
-    //     .selectAll("line")
-    //     .data(link_data)
-    //     .enter()
-    //     .append("line")
-    //     .attr("stroke-width", 2);
-    //
-    // function tickActions() {
-    //     node
-    //         .attr("cx", function (d) { return d.x})
-    //         .attr("cy", function (d) { return d.y});
-    //     link
-    //         .attr("x1", function (d) { return d.source.x})
-    //         .attr("y1", function (d) { return d.source.y})
-    //         .attr("x2", function (d) { return d.target.x})
-    //         .attr("y2", function (d) { return d.target.y});
-    // }
 }
 
 function circleColor(d) {

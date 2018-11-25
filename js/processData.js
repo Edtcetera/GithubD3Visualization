@@ -12,6 +12,7 @@ function getRepoCommits(callback) {
 // Where we identify what information we want to extract from API to later showCommits via D3
 function processCommit(data) {
     var dataset = [];
+    updateBranchDataset(data);
     for (i in data) {
         dataset.push(data[i].sha);
         //[0] is latest commit
