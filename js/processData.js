@@ -8,6 +8,7 @@ function getRepoCommits(callback) {
         });
 }
 
+
 // Where we identify what information we want to extract from API to later showCommits via D3
 function processCommit(data) {
     var dataset = [];
@@ -36,7 +37,7 @@ function getBranches(callback) {
             console.log(status);
             callback(data, status);
         });
-};
+}
 
 // TODO - callback function to process branches
 
@@ -45,7 +46,7 @@ function getBranches(callback) {
 function updateChart(dataset) {
     //find number of commits/circles to make
     var distanceBetweenNodes = (chartWidth)/(dataset.length + 1);
-    var middleGraph = chartHeight/2;
+    var middleGraph = chartHeight/6;
 
     makeCircles(dataset, distanceBetweenNodes, middleGraph);
     makeLines(dataset, distanceBetweenNodes, middleGraph);
@@ -60,6 +61,8 @@ function makeCircles(dataset, distanceBetweenNodes, middleGraph) {
     //TODO: Dynamically change the pulse size in accordance to circle radius
     for (i = 1; i <= numberCommits; i++) {
         svg.append("circle")
+            .attr("id", dataset[i - 1])
+            .attr("onclick", "testClick(this.id)")
             .attr("cx", i * distanceBetweenNodes)
             .attr("cy", middleGraph)
             .attr("r", 5);
@@ -73,7 +76,12 @@ function makeCircles(dataset, distanceBetweenNodes, middleGraph) {
             .attr("cy", middleGraph)
             .attr("r", 5);
     }
-    pulse();
+    // pulse();
+}
+
+// click on circle
+function testClick(id) {
+    alert(id);
 }
 
 // Lines represent the flow of commits, merges, etc

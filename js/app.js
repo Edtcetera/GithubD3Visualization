@@ -18,6 +18,7 @@ $(document).ready(function(){
 
         // call the user and repos functions
         getRepoCommits(showCommits);
+        getBranchesSameFiles();
 
     }); // end of search click function
 
