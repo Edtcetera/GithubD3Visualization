@@ -6,6 +6,7 @@ var chartWidth = 1000;
 var chartHeight = 500;
 var shaDiffs = {};
 var repoCommits = [];
+var refreshBool;
 
 $(document).on("click", function () {
   var tooltipDiv = document.getElementById('tooltip');
@@ -24,6 +25,7 @@ $(document).ready(function(){
         // call the user and repos functions
         getRepoCommits(showCommits);
         getBranchesSameFiles();
+        refreshBool = false;
 
     }); // end of search click function
 
@@ -31,11 +33,37 @@ $(document).ready(function(){
     $("#clear").click(function(){
         $("#term").val(''); // extra detail to clear out input box
         $("#repo").val('');
+        refreshBool = false;
         clearCanvas();
+    });
+
+    $("#refreshBool").click(function() {
+        if (refreshBool === true) {
+            refreshBool = false;
+            document.getElementById("refreshBool").innerHTML="Start refreshing";
+        } else {
+            refreshBool = true;
+            document.getElementById("refreshBool").innerHTML="stop refreshing";
+            refresh();
+        }
     });
 
     buildChart();
 });
+
+function refresh() {
+    if (refreshBool === true) {
+        setTimeout(function() {
+                // clearCanvas();
+                // getRepoCommits(showCommits);
+                // getBranchesSameFiles();
+                // refresh();
+            alert("REFRESH");
+            refresh();
+            },
+            10000);
+    }
+}
 
 function clearCanvas() {
     $("#repoName").text("\u00A0"); //&nbsp; empty space allows div to take up space
