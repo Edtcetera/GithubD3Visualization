@@ -188,11 +188,24 @@ function drawGraph(dataset) {
         .attr("r", radius)
         .attr("fill", circleColor)
         .attr("onclick", "testClick(this.id)")
+       //  .on("mouseover", function(){
+       //       current_position = d3.mouse(this);
+       //       var tooltipDiv = document.getElementById('tooltip2');
+       //       tooltipDiv.innerHTML = this.id;
+       //       let x = parseInt(current_position[0]) + 200;
+       //       let y = parseInt(current_position[1]) + 200;
+       //       tooltipDiv.style.top = y.toString()+'px';
+       //       tooltipDiv.style.left = x.toString()+'px';
+       //       tooltipDiv.style.display = "block";
+       //   })
+       //   .on("mouseout", function(){
+       //     var tooltipDiv = document.getElementById('tooltip2');
+       //     tooltipDiv.style.display = "none";
+       // })
         .call(d3.drag()
             .on("start", dragstarted)
             .on("drag", dragged)
             .on("end", dragended));
-
     node.append("title")
         .text(function(d) { return d.id;});
     simulation

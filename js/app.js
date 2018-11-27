@@ -4,13 +4,18 @@ var repoterm;
 var svg;
 var chartWidth = 1000;
 var chartHeight = 500;
+var shaDiffs = {};
+var repoCommits = [];
 
+$(document).on("click", function () {
+  var tooltipDiv = document.getElementById('tooltip');
+  tooltipDiv.style.display = "none";
+    });
 $(document).ready(function(){
 
     $("#search").click(function(){
         // clear out previous results if needed
         clearCanvas();
-
         // find out the searchterm
         // TODO: if click search with empty, fill in with edtcetera/towerDefense for DEBUG purpose, remove after
         searchterm = $("#term").val() ? $("#term").val() : "edtcetera";
@@ -312,4 +317,3 @@ function buildChart() {
             .attr("text-anchor", "middle")
             .attr("transform", "translate(" + (w / 2) + ",20)")
             .text("GitHub Repo");*/
-
